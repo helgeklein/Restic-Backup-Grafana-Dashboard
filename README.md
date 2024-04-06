@@ -3,5 +3,6 @@ This is a Grafana dashboard to monitor restic/resticprofile backup operations.
 
 ## Preview
 
-## Requirements
+## Requirements & Installation Instructions
 
+Please see [this blog post](https://helgeklein.com/blog/resticprofile-backup-monitoring-grafana-dashboard/) for detailed instructions.
