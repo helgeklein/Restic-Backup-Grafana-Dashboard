@@ -150,7 +150,7 @@
             "uid": "${DS_LOKI}"
           },
           "editorMode": "code",
-          "expr": "sum(\r\n  sum_over_time(\r\n    {$job_label_name=\"$job_label_value\", host=~\"(${host:pipe})\"} \r\n      | regexp `Files:\\s+(?P<new>\\d+)\\s+new,`\r\n      | label_format data=\"new\"\r\n      | unwrap new [$__interval]\r\n  )\r\nor\r\n  sum_over_time(\r\n    {$job_label_name=\"$job_label_value\", host=~\"(${host:pipe})\"} \r\n      | regexp `Files:.+ (?P<changed>\\d+)\\s+changed,`\r\n      | label_format data=\"changed\"\r\n      | unwrap changed [$__interval]\r\n  )\r\n) by (data)",
+          "expr": "sum(\r\n  sum_over_time(\r\n    {$job_label_name=\"$job_label_value\", host=~\"(${host:pipe})\"} \r\n      | regexp `Files:\\s+(?P<new>\\d+)\\s+new,`\r\n      | label_format data=\"new\"\r\n      | unwrap new [$__auto]\r\n  )\r\nor\r\n  sum_over_time(\r\n    {$job_label_name=\"$job_label_value\", host=~\"(${host:pipe})\"} \r\n      | regexp `Files:.+ (?P<changed>\\d+)\\s+changed,`\r\n      | label_format data=\"changed\"\r\n      | unwrap changed [$__auto]\r\n  )\r\n) by (data)",
           "legendFormat": "{{data}}",
           "queryType": "range",
           "refId": "A"
@@ -225,7 +225,7 @@
             "uid": "${DS_LOKI}"
           },
           "editorMode": "code",
-          "expr": "count_over_time(\n  {$job_label_name=\"$job_label_value\", host=~\"(${host:pipe})\"}\n    |= `finished 'backup'`\n    [$__interval]      \n)",
+          "expr": "count_over_time(\n  {$job_label_name=\"$job_label_value\", host=~\"(${host:pipe})\"}\n    |= `finished 'backup'`\n    [$__auto]\n)",
           "legendFormat": "backups",
           "queryType": "range",
           "refId": "A"
@@ -296,7 +296,7 @@
             "uid": "${DS_LOKI}"
           },
           "editorMode": "code",
-          "expr": "sum by (host) (\n  count_over_time(\n    {$job_label_name=\"$job_label_value\", host=~\"(${host:pipe})\"}\n        |~ `.+ on profile '.+': exit status \\d+`\n        | regexp `.+ on .+ exit status (?P<status>\\d+)`\n        | status != 0\n        [$__interval]      \n  )\n)",
+          "expr": "sum by (host) (\n  count_over_time(\n    {$job_label_name=\"$job_label_value\", host=~\"(${host:pipe})\"}\n        |~ `.+ on profile '.+': exit status \\d+`\n        | regexp `.+ on .+ exit status (?P<status>\\d+)`\n        | status != 0\n        [$__auto]      \n  )\n)",
           "legendFormat": "{{host}}",
           "queryType": "range",
           "refId": "A"
@@ -393,7 +393,7 @@
             "uid": "${DS_LOKI}"
           },
           "editorMode": "code",
-          "expr": "sum (\n  sum_over_time(\n    {$job_label_name=\"$job_label_value\", host=~\"(${host:pipe})\"}\n        |~ `processed .*files,.+ in \\d+:\\d+`\n        | regexp `processed \\d+ files, \\d+\\.\\d+ \\w+ in (?P<minutes>\\d+):(?P<seconds>\\d+)`\n        | label_format duration=\"{{.minutes}}m{{.seconds}}s\"\n        | unwrap duration_seconds(duration)\n        [$__interval]\n  )\n)",
+          "expr": "sum (\n  sum_over_time(\n    {$job_label_name=\"$job_label_value\", host=~\"(${host:pipe})\"}\n        |~ `processed .*files,.+ in \\d+:\\d+`\n        | regexp `processed \\d+ files, \\d+\\.\\d+ \\w+ in (?P<minutes>\\d+):(?P<seconds>\\d+)`\n        | label_format duration=\"{{.minutes}}m{{.seconds}}s\"\n        | unwrap duration_seconds(duration)\n        [$__auto]\n  )\n)",
           "legendFormat": "{{host}}",
           "queryType": "range",
           "refId": "A"
@@ -500,7 +500,7 @@
             "uid": "${DS_LOKI}"
           },
           "editorMode": "code",
-          "expr": "sum(\r\n  sum_over_time(\r\n    {$job_label_name=\"$job_label_value\", host=~\"(${host:pipe})\"}\r\n      |= `$added_to_repo_line`\r\n      | regexp `$added_to_repo_regex_start $size_regex`\r\n      | unwrap bytes(size)[$__interval]\r\n  )\r\n)",
+          "expr": "sum(\r\n  sum_over_time(\r\n    {$job_label_name=\"$job_label_value\", host=~\"(${host:pipe})\"}\r\n      |= `$added_to_repo_line`\r\n      | regexp `$added_to_repo_regex_start $size_regex`\r\n      | unwrap bytes(size)[$__auto]\r\n  )\r\n)",
           "legendFormat": "{{data}}",
           "queryType": "range",
           "refId": "A"
@@ -608,7 +608,7 @@
             "uid": "${DS_LOKI}"
           },
           "editorMode": "code",
-          "expr": "sum(\r\n  sum_over_time(\r\n    {$job_label_name=\"$job_label_value\", host=~\"(${host:pipe})\"}\r\n      | regexp `processed \\d+ files, $size_regex`\r\n      | unwrap bytes(size)[$__interval]\r\n  )\r\n)",
+          "expr": "sum(\r\n  sum_over_time(\r\n    {$job_label_name=\"$job_label_value\", host=~\"(${host:pipe})\"}\r\n      | regexp `processed \\d+ files, $size_regex`\r\n      | unwrap bytes(size)[$__auto]\r\n  )\r\n)",
           "legendFormat": "{{data}}",
           "queryType": "range",
           "refId": "A"
@@ -706,7 +706,7 @@
             "uid": "${DS_LOKI}"
           },
           "editorMode": "code",
-          "expr": "sum(\r\n  sum_over_time(\r\n    {$job_label_name=\"$job_label_value\", host=~\"(${host:pipe})\"}\r\n      |= `Files:`\r\n      | regexp `Files:\\s+(?P<new>\\d+)\\s+new,\\s+(?P<changed>\\d+)\\s+changed,\\s+(?P<unmodified>\\d+)\\s+unmodified`\r\n      | label_format modified=`{{add .new .changed}}`\r\n      | label_format ratio=`{{divf .modified .unmodified}}`\r\n      | unwrap ratio [$__interval]\r\n  )\r\n)",
+          "expr": "sum(\r\n  sum_over_time(\r\n    {$job_label_name=\"$job_label_value\", host=~\"(${host:pipe})\"}\r\n      |= `Files:`\r\n      | regexp `Files:\\s+(?P<new>\\d+)\\s+new,\\s+(?P<changed>\\d+)\\s+changed,\\s+(?P<unmodified>\\d+)\\s+unmodified`\r\n      | label_format modified=`{{add .new .changed}}`\r\n      | label_format ratio=`{{divf .modified .unmodified}}`\r\n      | unwrap ratio [$__auto]\r\n  )\r\n)",
           "legendFormat": "{{data}}",
           "queryType": "range",
           "refId": "A"
@@ -816,7 +816,7 @@
             "uid": "${DS_LOKI}"
           },
           "editorMode": "code",
-          "expr": "sum(\r\n  sum_over_time(\r\n    {$job_label_name=\"$job_label_value\", host=~\"(${host:pipe})\"}\r\n      |= `$added_to_repo_line`\r\n      | regexp `$added_to_repo_regex_start $size_regex \\((?P<stored>\\d+(\\.\\d+)? \\w+) stored\\)`\r\n      | label_format size=`{{bytes .size}}`, stored=`{{bytes .stored}}`\r\n      | label_format ratio=`{{divf .stored .size}}`\r\n      | unwrap ratio[$__interval]\r\n  )\r\n)",
+          "expr": "sum(\r\n  sum_over_time(\r\n    {$job_label_name=\"$job_label_value\", host=~\"(${host:pipe})\"}\r\n      |= `$added_to_repo_line`\r\n      | regexp `$added_to_repo_regex_start $size_regex \\((?P<stored>\\d+(\\.\\d+)? \\w+) stored\\)`\r\n      | label_format size=`{{bytes .size}}`, stored=`{{bytes .stored}}`\r\n      | label_format ratio=`{{divf .stored .size}}`\r\n      | unwrap ratio[$__auto]\r\n  )\r\n)",
           "legendFormat": "{{data}}",
           "queryType": "range",
           "refId": "A"
@@ -974,6 +974,6 @@
   "timezone": "",
   "title": "Restic Backup",
   "uid": "d2goojkgk",
-  "version": 16,
+  "version": 17,
   "weekStart": ""
 }
