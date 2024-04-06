@@ -1,2 +1,7 @@
-# Restic-Backup-Grafana-Dashboard
-Grafana dashboard to monitor restic/resticprofile backup operations.
+# Restic/Resticprofile Backup Grafana Dashboard
+This is a Grafana dashboard to monitor restic/resticprofile backup operations.
+
+## Preview
+
+## Requirements
+
